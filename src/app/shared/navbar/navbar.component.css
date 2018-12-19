@@ -1,0 +1,8 @@
+.navbar-spacer {
+    flex: 1 1 auto;
+  }
+.navbar-icon:hover
+{
+  color:#677BE5;
+  cursor: pointer;
+}
