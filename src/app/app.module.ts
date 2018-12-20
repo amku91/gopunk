@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 
@@ -20,6 +21,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatRippleModule} from '@angular/material/core';
 
 /**App Common/Entrypoint Component Section */
 import { AppComponent } from './app.component';
@@ -44,6 +47,7 @@ import { HomeComponent } from './components/home/home.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule,
     AppRoutingModule,
     MatCardModule,
@@ -56,6 +60,8 @@ import { HomeComponent } from './components/home/home.component';
     MatProgressBarModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatDividerModule,
+    MatRippleModule
   ],
   exports: [
     NavbarComponent,

@@ -4,6 +4,53 @@
   </div>
   <div class="rightContainer">
     <div class="row margin10">
+      <div class="col-md-8 col-md-offset-2">
+        <!--Random Punk Code Begin-->
+        <div class="row">
+          <div class="col-md-12">
+            <mat-card class="random-punk-card" matRipple *ngIf="randomPunkSubject$ | async as randomData; else loader">
+              <mat-card-header>
+                <mat-card-title>{{randomData.name}}</mat-card-title>
+                <mat-card-subtitle>{{randomData.tagline}}</mat-card-subtitle>
+
+              </mat-card-header>
+
+              <mat-card-content>
+                <mat-divider [inset]="true"></mat-divider>
+                <div class="row margin-top-20">
+                  <div class="col-md-3">
+                    <img mat-card-image src="{{randomData.image_url}}" alt="Photo of a Shiba Inu">
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      {{randomData.description}}
+                    </p>
+                    <p class="content-footer">
+                      <span>
+                        Contributed By: {{randomData.contributed_by}}
+                      </span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <span>
+                        First Served: {{randomData.first_brewed}}
+                      </span>
+                    </p>
+                  </div>
+                  <div class="col-md-3">
+                    <button mat-raised-button color="primary" (click)="getRandomPunk()">Another Beer</button>
+                    <div class="margin-top-20"></div>
+                    <button mat-raised-button color="warn" (click)="getRandomPunk()">Non Alcoholic Random Beer</button>
+                  </div>
+                </div>
+
+              </mat-card-content>
+            </mat-card>
+            <ng-template #loader>
+              <div>LOADING.....</div>
+            </ng-template>
+          </div>
+        </div>
+        <!--Random Punk Code End-->
+      </div>
     </div>
   </div>
-  </div>
+</div>
