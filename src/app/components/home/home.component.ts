@@ -47,4 +47,20 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getNonAlcoholicRandomPunk(): void{
+    this.punkService.getNonAlcoholicPunk().pipe(
+      delay(2000),
+      catchError((error: any) => {
+        this.loadingError$.next(true);
+        return throwError(error);
+      }),
+      finalize(() => {})
+    ).subscribe(data => {
+      /**push data to async pipe */
+      this.randomPunkSubject$.next(data);
+      /**set error to false */
+      this.loadingError$.next(false);
+    });
+  }
+
 }
