@@ -51,25 +51,18 @@ export class PunkService {
       ) as Observable<any>;
   }
 
-  public searchPunk(name: string, description: string): Observable<any> {
-    const params: any = {};
+  public searchPunks(queryString: string, option: string): Observable<any> {
+    let params;
     /**Send params as per selected search by option */
-    if(name != ""){
-      params["beer_name"] =  name;
-    }
-    if(description != ""){
-      params["beer_description"] =  description;
-    }
-    return this.http.get<any>(this.randomSearchPunkAPI, params)
+    params = new HttpParams().set("beer_name", queryString);
+    return this.http.get<any>(this.randomSearchPunkAPI, {params: params})
       .pipe(
         retry(1),
         map(
           (data) => {
-            console.log("search punk data logged");
-            console.log(data);
-            return data[0];
+            return data;
           }),
-        catchError(this.appContext.handleError('searchPunk'))
+        catchError(this.appContext.handleError('searchPunks'))
       ) as Observable<any>;
   }
 

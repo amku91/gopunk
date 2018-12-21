@@ -8,7 +8,7 @@
         <!--Random Punk Code Begin-->
         <div class="row">
           <div class="col-md-12">
-            <mat-card class="random-punk-card" matRipple *ngIf="randomPunkSubject$ | async as randomData; else loader">
+            <mat-card class="random-punk-card" *ngIf="randomPunkSubject$ | async as randomData; else loader">
               <mat-card-header>
                 <mat-card-title>{{randomData.name}}</mat-card-title>
                 <mat-card-subtitle>{{randomData.tagline}}</mat-card-subtitle>
@@ -38,7 +38,8 @@
                   <div class="col-md-3">
                     <button mat-raised-button color="primary" (click)="getRandomPunk()">Another Beer</button>
                     <div class="margin-top-20"></div>
-                    <button mat-raised-button color="warn" (click)="getNonAlcoholicRandomPunk()">Non Alcoholic Random Beer</button>
+                    <button mat-raised-button color="warn" (click)="getNonAlcoholicRandomPunk()">Non Alcoholic Random
+                      Beer</button>
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -46,28 +47,47 @@
                 </div>
                 <!--Punk Search Begin-->
                 <form [formGroup]="searchFormGroup" (ngSubmit)="searchPunks()">
-                <div class="row margin-top-20">
-                  <div class="col-md-5">
-                    <mat-form-field class="search-mat-input" hideRequiredMarker="false" appearance="outline">
-                      <mat-label>Search Punk</mat-label>
-                      <input matInput formControlName="query" placeholder="Enter something to search...">
-                      <mat-icon matSuffix>search</mat-icon>
-                      <mat-hint>What's you looking for? Just write here and search your punk. </mat-hint>
-                    </mat-form-field>
+                  <div class="row margin-top-20">
+                    <div class="col-md-5">
+                      <mat-form-field class="search-mat-input" hideRequiredMarker="false" appearance="outline">
+                        <mat-label>Search Punk</mat-label>
+                        <input matInput formControlName="query" placeholder="Enter something to search...">
+                        <mat-icon matSuffix>search</mat-icon>
+                        <mat-hint>What's you looking for? Just write here and search your punk. </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-radio-group formControlName="option" class="option-mat-radio">
+                        <mat-radio-button value="name">By Name</mat-radio-button>&nbsp;&nbsp;
+                        <mat-radio-button value="description">By Description</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="col-md-3">
+                      <button mat-raised-button [disabled]="!searchFormGroup.valid" color="primary">Search</button>
+                    </div>
                   </div>
-                  <div class="col-md-4">
-                    <mat-radio-group formControlName="option" class="option-mat-radio">
-                      <mat-radio-button value="name">By Name</mat-radio-button>
-                      <mat-radio-button value="description">By Description</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div class="col-md-3">
-                    <button mat-raised-button color="primary">Search</button>
-                  </div>
-                </div>
-              </form>
+                </form>
                 <!-- Punk Search End-->
                 <!-- Punk Result Begin-->
+                <div *ngIf="searchPunkData.length">
+                  <h4 class="margin-top-20">Search Results</h4>
+                  <div class="row margin-top-20 margin-bottom-20" matRipple *ngFor="let punk of searchPunkData">
+                    <div class="col-md-3">
+                      <img mat-card-image src="{{punk.image_url}}" alt="{{punk.tagline}}">
+                    </div>
+                    <div class="col-md-9">
+                      <div class="title-div">
+                        {{punk.name}}
+                      </div>
+                      <span class="tagline-span">{{punk.tagline}}</span>
+                      <br/><br/>
+                      <p>
+                        {{punk.description}}
+                      </p>
+                    </div>
+                    <mat-divider></mat-divider>
+                  </div>
+                </div>
                 <!-- Punk Result End-->
               </mat-card-content>
             </mat-card>

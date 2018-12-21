@@ -12,6 +12,10 @@
     margin-top: 20px;
 }
 
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+
 .mat-card-title{
     font-size: 16px;
     font-weight: bold;
@@ -28,4 +32,14 @@
 
 .search-mat-input{
     width: 100% !important;
+}
+
+.title-div{
+    font-size: 16px;
+    font-weight: bold;
+}
+.tagline-span{
+    color: rgba(0,0,0,.54);
+    font-size: 12px;
+    margin-bottom: 10px;
 }

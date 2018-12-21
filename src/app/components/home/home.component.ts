@@ -18,7 +18,8 @@ import { Randompunkinterface } from 'src/app/models/randompunkinterface';
 })
 export class HomeComponent implements OnInit {
 
-  public randomPunkSubject$: BehaviorSubject<Randompunkinterface[]> = new BehaviorSubject<Randompunkinterface[]>(null);
+  public randomPunkSubject$: BehaviorSubject<Randompunkinterface> = new BehaviorSubject<Randompunkinterface>(null);
+  public searchPunkData: Array<Randompunkinterface[]> = [];
   public loadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public loadingError$: Subject<boolean> = new Subject<boolean>();
   public searchFormGroup: FormGroup;
@@ -42,16 +43,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  searchPunks(): void {
-    console.log("DATA LOGGED");
-    console.log(this.searchFormGroup.value);
-  }
-
   /**Service related methods */
 
   getRandomPunk(): void{
     this.punkService.getRandomPunk().pipe(
-      delay(2000),
+      delay(100),
       catchError((error: any) => {
         this.loadingError$.next(true);
         return throwError(error);
@@ -76,6 +72,33 @@ export class HomeComponent implements OnInit {
     ).subscribe(data => {
       /**push data to async pipe */
       this.randomPunkSubject$.next(data);
+      /**set error to false */
+      this.loadingError$.next(false);
+    });
+  }
+
+  searchPunks(): void {
+    let data:any = this.searchFormGroup.value;
+    let option:string = data.option;
+    let query:string = data.query.replace(/ /g,"_");/**Convert space to underscore as API server requested */
+    this.punkService.searchPunks(query, option).pipe(
+      delay(100),
+      catchError((error: any) => {
+        this.loadingError$.next(true);
+        return throwError(error);
+      }),
+      finalize(() => {})
+    ).subscribe(data => {
+      /**push data to async pipe */
+      /**API only provide filter data for name only. let do description by loading 80 records. */
+      if(option == "name"){
+        this.searchPunkData = data;
+      }else{
+        /**If you want to search on frontend for description specific */
+        //let xData = data.filter(punk => {return punk.description.includes(query)});
+        this.searchPunkData = data;
+      }
+      
       /**set error to false */
       this.loadingError$.next(false);
     });
