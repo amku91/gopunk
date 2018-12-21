@@ -25,3 +25,7 @@
     font-size: 12px;
     font-weight: bold;
 }
+
+.search-mat-input{
+    width: 100% !important;
+}

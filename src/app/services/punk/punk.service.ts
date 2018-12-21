@@ -34,14 +34,17 @@ export class PunkService {
 
   public getNonAlcoholicPunk():  Observable<any> {
     /**For non alcoholic; abv <= 0.05 */
-    let params = new HttpParams().set('abv_lt', "2");
+    //let params = new HttpParams().set('abv_lt', "1");
+    let params = {
+      'abv_gt': "0",
+      'abv_lt': "1",
+      'per_page': '80',
+    };
     return this.http.get<any>(this.randomNonAlcoholinPunkAPI, {params: params})
       .pipe(
         retry(1),
         map(
           (data) => {
-            console.log("NON alcholoic data logged");
-            console.log(data);
             return data[0];
           }),
         catchError(this.appContext.handleError('getNonAlcoholicPunk'))

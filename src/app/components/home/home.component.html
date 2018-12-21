@@ -41,7 +41,34 @@
                     <button mat-raised-button color="warn" (click)="getNonAlcoholicRandomPunk()">Non Alcoholic Random Beer</button>
                   </div>
                 </div>
-
+                <div class="col-md-12">
+                  <mat-divider></mat-divider>
+                </div>
+                <!--Punk Search Begin-->
+                <form [formGroup]="searchFormGroup" (ngSubmit)="searchPunks()">
+                <div class="row margin-top-20">
+                  <div class="col-md-5">
+                    <mat-form-field class="search-mat-input" hideRequiredMarker="false" appearance="outline">
+                      <mat-label>Search Punk</mat-label>
+                      <input matInput formControlName="query" placeholder="Enter something to search...">
+                      <mat-icon matSuffix>search</mat-icon>
+                      <mat-hint>What's you looking for? Just write here and search your punk. </mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-radio-group formControlName="option" class="option-mat-radio">
+                      <mat-radio-button value="name">By Name</mat-radio-button>
+                      <mat-radio-button value="description">By Description</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="col-md-3">
+                    <button mat-raised-button color="primary">Search</button>
+                  </div>
+                </div>
+              </form>
+                <!-- Punk Search End-->
+                <!-- Punk Result Begin-->
+                <!-- Punk Result End-->
               </mat-card-content>
             </mat-card>
             <ng-template #loader>
