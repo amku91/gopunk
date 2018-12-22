@@ -71,7 +71,7 @@
                   <div matRipple *ngIf="(searchPunkSubject$ | async) as searchPunkData; else loaderOrError">
                     <h4 class="margin-top-20">Search Results</h4>
                     <!-- Search Result No Data Begin-->
-                    <div class="row" *ngIf="!searchPunkData.length">
+                    <div class="row" *ngIf="!searchPunkData?.length">
                       <div class="col-md-12 no-data-punk-container">
                           <img src="../../../assets/img/Magic.gif" class="no-data-punk" />
                           <div class="no-data-text">No Matching Search Result Found.</div>

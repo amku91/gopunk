@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   /**Random punk section vars */
   public randomPunkSubject$: BehaviorSubject<Randompunkinterface> = new BehaviorSubject<Randompunkinterface>(null);
   /**Search punk section vars */
-  public searchPunkSubject$: BehaviorSubject<Randompunkinterface> = new BehaviorSubject<Randompunkinterface>(null);
+  public searchPunkSubject$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public searchStarted: boolean = false;
   public searchFormGroup: FormGroup;
 

@@ -7,6 +7,7 @@ import { map, catchError, retry } from 'rxjs/internal/operators';
 import { environment } from 'src/environments/environment';
 /**Services */
 import { ContextService } from '../context.service';
+import { Randompunkinterface } from 'src/app/models/randompunkinterface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class PunkService {
   constructor(private http: HttpClient, private appContext: ContextService) {}
 
 
-  public getRandomPunk(): Observable<any> {
+  public getRandomPunk(): Observable<Randompunkinterface> {
     return this.http.get<any>(this.randomPunkAPI)
       .pipe(
         retry(3),
@@ -32,7 +33,7 @@ export class PunkService {
       ) as Observable<any>;
   }
 
-  public getNonAlcoholicPunk():  Observable<any> {
+  public getNonAlcoholicPunk():  Observable<Randompunkinterface> {
     /**For non alcoholic; abv <= 0.05 */
     //let params = new HttpParams().set('abv_lt', "1");
     let params = {
@@ -51,7 +52,7 @@ export class PunkService {
       ) as Observable<any>;
   }
 
-  public searchPunks(queryString: string, option: string): Observable<any> {
+  public searchPunks(queryString: string, option: string): Observable<Randompunkinterface[]> {
     /**Send params as per selected search by option */
     /**It's looks like API server searching for both description and name on beer_name field. */
     let params = new HttpParams().set("beer_name", queryString);
