@@ -10,6 +10,9 @@ body{
 }
 .rightContainer
 {
-    height: calc(100vmin - 100px);
+    min-height: calc(100vh - 75px);
+    height: calc(100vh - 50px);
+    max-height: calc(100vh);
     overflow-y: scroll;
+    overflow-x: hidden;
 }

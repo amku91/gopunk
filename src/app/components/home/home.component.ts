@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/internal/operators';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
@@ -18,41 +18,50 @@ import { Randompunkinterface } from 'src/app/models/randompunkinterface';
 })
 export class HomeComponent implements OnInit {
 
+  /**Random punk section vars */
   public randomPunkSubject$: BehaviorSubject<Randompunkinterface> = new BehaviorSubject<Randompunkinterface>(null);
-  public searchPunkData: Array<Randompunkinterface[]> = [];
-  public loadingSubject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public loadingError$: Subject<boolean> = new Subject<boolean>();
+  /**Search punk section vars */
+  public searchPunkSubject$: BehaviorSubject<Randompunkinterface> = new BehaviorSubject<Randompunkinterface>(null);
+  public searchStarted: boolean = false;
   public searchFormGroup: FormGroup;
 
-  constructor(private appContext: ContextService, private punkService: PunkService, private formBuilder: FormBuilder) { }
+  public loadingError$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private appContext: ContextService, private punkService: PunkService, private formBuilder: FormBuilder,
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     /**Build form instance */
     this.buildSearchForm();
   }
 
-  ngAfterViewInit(): void{
+  ngAfterViewInit(): void {
     /**Get random punk */
     this.getRandomPunk();
+    /**Detect changes */
+    this.cdRef.detectChanges();
   }
 
   buildSearchForm(): void {
     this.searchFormGroup = this.formBuilder.group({
-      query: [null, Validators.required],
+      query: [null, Validators.compose([Validators.required])],
       option: [null, Validators.required]
     });
   }
 
   /**Service related methods */
 
-  getRandomPunk(): void{
+  getRandomPunk(): void {
+    /**Reinitialise subject to handle loader, error, and data */
+    this.randomPunkSubject$ = new BehaviorSubject<Randompunkinterface>(null);
+    this.loadingError$.next(false);
     this.punkService.getRandomPunk().pipe(
-      delay(100),
+      delay(5),
       catchError((error: any) => {
         this.loadingError$.next(true);
         return throwError(error);
       }),
-      finalize(() => {})
+      finalize(() => { })
     ).subscribe(data => {
       /**push data to async pipe */
       this.randomPunkSubject$.next(data);
@@ -61,14 +70,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getNonAlcoholicRandomPunk(): void{
+  getNonAlcoholicRandomPunk(): void {
+    /**Reinitialise subject to handle loader, error, and data */
+    this.randomPunkSubject$ = new BehaviorSubject<Randompunkinterface>(null);
+    this.loadingError$.next(false);
     this.punkService.getNonAlcoholicPunk().pipe(
-      delay(100),
+      delay(5),
       catchError((error: any) => {
         this.loadingError$.next(true);
         return throwError(error);
       }),
-      finalize(() => {})
+      finalize(() => { })
     ).subscribe(data => {
       /**push data to async pipe */
       this.randomPunkSubject$.next(data);
@@ -78,27 +90,32 @@ export class HomeComponent implements OnInit {
   }
 
   searchPunks(): void {
-    let data:any = this.searchFormGroup.value;
-    let option:string = data.option;
-    let query:string = data.query.replace(/ /g,"_");/**Convert space to underscore as API server requested */
+    /**Reinitialise subject to handle loader, error, and data */
+    this.searchPunkSubject$ = new BehaviorSubject<Randompunkinterface>(null);
+    this.loadingError$.next(false);
+    this.searchStarted = true;
+    /**Get Form Data */
+    let data: any = this.searchFormGroup.value;
+    let option: string = data.option;
+    let query: string = data.query.replace(/ /g, "_");/**Convert space to underscore as API server requested */
     this.punkService.searchPunks(query, option).pipe(
-      delay(100),
+      delay(5),
       catchError((error: any) => {
         this.loadingError$.next(true);
         return throwError(error);
       }),
-      finalize(() => {})
+      finalize(() => { })
     ).subscribe(data => {
       /**push data to async pipe */
       /**API only provide filter data for name only. let do description by loading 80 records. */
-      if(option == "name"){
-        this.searchPunkData = data;
-      }else{
+      if (option == "name") {
+        this.searchPunkSubject$.next(data);
+      } else {
         /**If you want to search on frontend for description specific */
         //let xData = data.filter(punk => {return punk.description.includes(query)});
-        this.searchPunkData = data;
+        this.searchPunkSubject$.next(data);
       }
-      
+
       /**set error to false */
       this.loadingError$.next(false);
     });
