@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,4 +11,11 @@ import { Injectable } from '@angular/core';
 export class ContextService {
 
   constructor() { }
+
+  public handleError(operation: string = 'operation') {
+    return (error: any) => {
+      error.operation = operation;
+      return throwError(error);
+    };
+  }
 }

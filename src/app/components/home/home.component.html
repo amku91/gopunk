@@ -4,6 +4,130 @@
   </div>
   <div class="rightContainer">
     <div class="row margin10">
+      <div class="col-md-8 col-md-offset-2">
+        <!--Random Punk Code Begin-->
+        <div class="row">
+          <div class="col-md-12">
+            <h5 *ngIf="loadingError$ | async">Random Punk</h5>
+            <mat-card class="random-punk-card" *ngIf="randomPunkSubject$ | async as randomData; else loaderOrError">
+              <mat-card-header>
+                <mat-card-title>{{randomData.name}}</mat-card-title>
+                <mat-card-subtitle>{{randomData.tagline}}</mat-card-subtitle>
+
+              </mat-card-header>
+
+              <mat-card-content>
+                <mat-divider [inset]="true"></mat-divider>
+                <div class="row margin-top-20">
+                  <div class="col-md-3">
+                    <img mat-card-image src="{{randomData.image_url}}" alt="Photo of a Shiba Inu">
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      {{randomData.description}}
+                    </p>
+                    <div class="content-footer">
+                      <p>
+                        Contributed By: {{randomData.contributed_by}}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <button mat-raised-button color="primary" (click)="getRandomPunk()">Another Beer</button>
+                    <div class="margin-top-20"></div>
+                    <button mat-raised-button color="warn" (click)="getNonAlcoholicRandomPunk()">Non Alcoholic Random
+                      Beer</button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="search-punk-card">
+              <mat-card-content>
+                <!--Punk Search Begin-->
+                <form [formGroup]="searchFormGroup" (ngSubmit)="searchPunks()">
+                  <div class="row margin-top-20">
+                    <div class="col-md-5">
+                      <mat-form-field class="search-mat-input" hideRequiredMarker="false" appearance="outline">
+                        <mat-label>Search Punk</mat-label>
+                        <input matInput formControlName="query" t autocomplete="off" pattern="^[a-zA-Z0-9\- ]+$" placeholder="Enter something to search...">
+                        <mat-icon matSuffix>search</mat-icon>
+                        <mat-hint>What are you looking for? Just write here and search your punk. </mat-hint>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-4 margin-top-bottom-20">
+                      <mat-radio-group formControlName="option" class="option-mat-radio">
+                        <mat-radio-button value="name">By Name</mat-radio-button>&nbsp;&nbsp;
+                        <mat-radio-button value="description">By Description</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="col-md-3 margin-top-10">
+                      <button mat-raised-button [disabled]="!searchFormGroup.valid" color="primary">Search</button>
+                    </div>
+                  </div>
+                </form>
+                <!-- Punk Search End-->
+                <!-- Punk Result Begin-->
+                <div class="search-result-container" *ngIf="searchStarted">
+                  <div matRipple *ngIf="(searchPunkSubject$ | async) as searchPunkData; else loaderOrError">
+                    <h4 class="margin-top-20">Search Results</h4>
+                    <!-- Search Result No Data Begin-->
+                    <div class="row" *ngIf="!searchPunkData?.length">
+                      <div class="col-md-12 no-data-punk-container">
+                          <img src="../../../assets/img/Magic.gif" class="no-data-punk" />
+                          <div class="no-data-text">No Matching Search Result Found.</div>
+                      </div>
+                    </div>
+                    <!-- Search Result No Data End -->
+                    <div class="row margin-top-20 margin-bottom-20" *ngFor="let punk of searchPunkData">
+                      <div class="col-md-3">
+                        <img mat-card-image src="{{punk.image_url}}" alt="{{punk.tagline}}">
+                      </div>
+                      <div class="col-md-9">
+                        <div class="title-div">
+                          {{punk.name}}
+                        </div>
+                        <span class="tagline-span">{{punk.tagline}}</span>
+                        <br /><br />
+                        <p>
+                          {{punk.description}}
+                        </p>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                            <mat-divider></mat-divider>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <!-- Punk Result End-->
+              </mat-card-content>
+            </mat-card>
+            <ng-template #loaderOrError>
+              <div class="row" *ngIf="!(loadingError$ | async)">
+                <div class="col-md-12 loader-punk-container">
+                  <img src="../../../assets/img/loader-ellipsis.svg" class="loader-punk" />
+                </div>
+              </div>
+              <div class="row" *ngIf="loadingError$ | async">
+                <div class="col-md-12 error-punk-container">
+                  <img src="../../../assets/img/something-went-wrong.gif" class="error-punk" />
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <!--Random Punk Code End-->
+      </div>
     </div>
+    <div class="row margin10">
+        <div class="col-md-12">
+          <div class="clearfix"></div>
+        </div>
+      </div>
   </div>
+  <div class="row">
+    <!--For Footer if required-->
   </div>
+</div>

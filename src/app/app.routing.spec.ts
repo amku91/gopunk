@@ -18,7 +18,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {routes} from './app.routing';
 import {Router} from "@angular/router";
 import {Location} from "@angular/common";
-import { HttpModule } from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -30,7 +31,10 @@ import { HomeComponent } from './components/home/home.component';
 TestBed.configureTestingModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 });
-describe('AppComponent', () => {
+describe('Router: App', () => {
+  let location: Location;
+  let router: Router;
+  let fixture;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -55,19 +59,25 @@ describe('AppComponent', () => {
         MatSnackBarModule,
         MatRadioModule,
         MatToolbarModule,
-        HttpModule,
+        HttpClientModule,
+        HttpClientTestingModule,
         MatDividerModule
       ],
     }).compileComponents();
+    router = TestBed.get(Router);
+    location = TestBed.get(Location);
+
+    fixture = TestBed.createComponent(AppComponent);
+    router.initialNavigation();
   }));
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+  it('navigate to "" redirects you to /home', fakeAsync(() => { 
+    router.navigate(['']); 
+    tick(); 
+    expect(location.path()).toBe('/home'); 
   }));
-  it(`should have as title 'Gopunk'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Gopunk');
+  it('navigate to any url redirects you to /home', fakeAsync(() => { 
+    router.navigate(['/wrongpath']); 
+    tick(); 
+    expect(location.path()).toBe('/home'); 
   }));
 });
