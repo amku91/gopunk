@@ -52,9 +52,9 @@ export class PunkService {
   }
 
   public searchPunks(queryString: string, option: string): Observable<any> {
-    let params;
     /**Send params as per selected search by option */
-    params = new HttpParams().set("beer_name", queryString);
+    /**It's looks like API server searching for both description and name on beer_name field. */
+    let params = new HttpParams().set("beer_name", queryString);
     return this.http.get<any>(this.randomSearchPunkAPI, {params: params})
       .pipe(
         retry(1),
